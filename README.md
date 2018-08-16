@@ -13,6 +13,7 @@ Enter your API credentials into `/src/Service/ApiService.php.dist` and rename th
 2. You'll get redirected to `rss.php?code=...`, your tokens will get stored and you'll get assigned a permanent user token (`Your user token is ...`).
 3. Now you can use your user token to create RSS feeds, passing it as `user_token` (examples below).
 
+#### Examples
 Offers for "ford mustang" phrase:
 `rss.php?user_token=...&phrase=ford+mustang`
 
