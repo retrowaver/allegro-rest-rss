@@ -25,4 +25,4 @@ GET parameters are directly passed to API, so it's possible to use every possibl
 * You will most likely want to write your own `StorageServiceInterface` implementation (current one is super simple, uses text file and doesn't even support multiple users; I don't feel like writing anything fancier at the moment).
 * Allegro REST RSS uses [php-allegro-rest-api](https://github.com/Wiatrogon/php-allegro-rest-api), which has certain flaws, mainly:
 	* Doesn't let you set multiple values for a single filter ([issue](https://github.com/Wiatrogon/php-allegro-rest-api/issues/6))
-* REST API allows you to get a maximum of 100 latest offers, but unfortunately it prioritizes *promoted* offers. Therefore, if there's more than 100 promoted offers, no *regular* offers will be shown, making RSS feed useless for most purposes.
+* REST API allows you to get a maximum of 100 latest offers, but unfortunately it prioritizes *promoted* offers. Therefore, if there's more than 100 (or whatever the limit is set) promoted offers, no *regular* offers will be shown, making RSS feed useless for most purposes.
