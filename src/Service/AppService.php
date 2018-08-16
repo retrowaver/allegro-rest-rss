@@ -33,7 +33,7 @@ class AppService implements AppServiceInterface
 
     public function getRss(array $data): string
     {
-        // Get user token and remove it from $get (everything else will be passed to API)
+        // Get user token and remove it from data (everything else will be passed to API)
         $userToken = $data['user_token'];
         unset($data['user_token']);
 
@@ -57,7 +57,6 @@ class AppService implements AppServiceInterface
 
         // Get offers data from API and create an RSS feed with it
         $response = $this->apiService->getOffersListing($data);
-
         $offers = array_merge($response->items->promoted, $response->items->regular);
         $feed = $this->rssService->buildRssFromOffers($offers);
 
