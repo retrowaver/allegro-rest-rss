@@ -9,25 +9,25 @@ use App\Entity\Token;
  */
 class StorageService implements StorageServiceInterface
 {
-	public function getToken(string $userToken): ?Token
-	{
-		$x = explode("\n", file_get_contents(__DIR__ . '/../../storage/storage.txt'));
-		return new Token(...$x);
-	}
+    public function getToken(string $userToken): ?Token
+    {
+        $x = explode("\n", file_get_contents(__DIR__ . '/../../storage/storage.txt'));
+        return new Token(...$x);
+    }
 
-	public function persistToken(Token $token): void
-	{
-		$f = fopen(__DIR__ . '/../../storage/storage.txt', 'w');
-		fwrite(
-			$f,
-			sprintf(
-				"%s\n%s\n%s\n%d",
-				$token->getUserToken(),
-				$token->getAccessToken(),
-				$token->getRefreshToken(),
-				$token->getRefreshedAt()
-			)
-		);
-		fclose($f);
-	}
+    public function persistToken(Token $token): void
+    {
+        $f = fopen(__DIR__ . '/../../storage/storage.txt', 'w');
+        fwrite(
+            $f,
+            sprintf(
+                "%s\n%s\n%s\n%d",
+                $token->getUserToken(),
+                $token->getAccessToken(),
+                $token->getRefreshToken(),
+                $token->getRefreshedAt()
+            )
+        );
+        fclose($f);
+    }
 }

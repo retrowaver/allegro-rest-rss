@@ -14,7 +14,7 @@ $container = $builder->build();
 $controller = $container->get('App\\Controller\\RssController');
 
 try {
-	$controller->rss();
+    $controller->rss();
 } catch (App\Exception\AllegroRestRssException $e) {
-	echo $e->getMessage();
+    echo $e->getMessage();
 }
