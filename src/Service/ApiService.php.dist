@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Service;
+
+use Allegro\REST\Api;
+use App\Entity\Token;
+use App\Exception\AllegroRestRssException;
+
+class ApiService implements ApiServiceInterface
+{
+	/** API client id */
+	const API_CLIENT_ID = '5d............dd';
+
+	/** API client secret */
+	const API_CLIENT_SECRET = 'BB............CR';
+
+	/** API redirect URL */
+	const API_REDIRECT_URL = 'http://example.com/rss.php';
+
+	/**
+     * @Inject
+     * @var Api $api
+     */
+    private $api;
+
+	public function getAuthorizationUri(): string
+	{
+		return $this->api->getAuthorizationUri();
+	}
+
+	public function getNewAccessToken(string $code)
+	{
+		$response = json_decode($this->api->getNewAccessToken($code));
+		$this->checkForErrors($response);
+		return $response;
+	}
+
+	public function getOffersListing(array $data)
+	{
+		$response = json_decode($this->api->offers->listing->get($data));
+		$this->checkForErrors($response);
+		return $response;
+	}
+
+	public function setToken(Token $token): self
+	{
+		$this->api = new Api(
+			self::API_CLIENT_ID,
+			self::API_CLIENT_SECRET,
+			null,
+			self::API_REDIRECT_URL,
+			$token->getAccessToken(),
+			$token->getRefreshToken()
+		);
+
+		return $this;
+	}
+
+	public function refreshToken(Token $token): self
+	{
+		$response = json_decode($this->api->refreshAccessToken());
+		$this->checkForErrors($response);
+		$token
+			->setAccessToken($response->access_token)
+			->setRefreshToken($response->refresh_token)
+			->setRefreshedAt(time())
+		;
+
+		return $this;
+	}
+
+	private function checkForErrors($response)
+	{
+		if (isset($response->errors[0]->userMessage)) {
+			throw new AllegroRestRssException($response->errors[0]->userMessage);
+		}
+
+		if (isset($response->error)) {
+			throw new AllegroRestRssException('Error: ' . $response->error);
+		}
+	}
+}
